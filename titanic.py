@@ -109,7 +109,7 @@ from sklearn.metrics import r2_score
 from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier
 
 
-randomForestModel = RandomForestClassifier(n_estimators=250,random_state=1,oob_score=True)
+randomForestModel = RandomForestClassifier(n_estimators=250,random_state=1,max_depth=12,oob_score=True)
 cv_rf = cross_val_score(estimator = randomForestModel, X = x_train, y = y_train, cv = 10)
 randomForestModel.fit(x_train,y_train)
 randomForestModel.predict(x_train)
