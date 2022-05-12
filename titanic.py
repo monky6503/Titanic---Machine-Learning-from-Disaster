@@ -12,6 +12,7 @@ df_data = train_data.append(test_data)
 print(df_data[:len(train_data)])
 print(df_data[len(train_data):])
 df_data.set_index("PassengerId",inplace=True)
+print(df_data.isnull().sum())
 
 df_data["Sex"] = df_data["Sex"].map({"female": 0, "male": 1})
 df_data["Age"] = df_data["Age"].fillna(df_data["Age"].median())
@@ -53,7 +54,6 @@ print(df_data.head())
 
 import seaborn as sns
 
-
 fig, axes = plt.subplots(2,3)
 p1 = sns.countplot(ax=axes[0,0],data=df_data[:len(train_data)],x="Sex")
 p1.set_xticklabels(["Female","Male"])
@@ -66,7 +66,7 @@ p5 = sns.countplot(ax=axes[1,1],data=df_data[:len(train_data)], x="family_1")
 p5.set_xticklabels(["1~3","4~6","7 up"])
 p5.set_xlabel("Family_number")
 p6 = sns.countplot(ax=axes[1,2],data=df_data[:len(train_data)], x="Deck")
-plt.show()
+
 
 fig, axes = plt.subplots(1,3)
 p7 = sns.countplot(ax=axes[0],data=df_data[:len(train_data)], x="Pclass", hue="Survived")
@@ -75,21 +75,20 @@ p8 = sns.countplot(ax=axes[1],data=df_data[:len(train_data)], x="Sex", hue="Surv
 p8.set_xticklabels(["Female","Male"])
 p9 = sns.countplot(ax=axes[2],data=df_data[:len(train_data)], x="fare_bin6", hue="Survived")
 p9.set_xlabel("Fare_interval")
-plt.show()
 
+fig = plt.figure()
 p10 = sns.boxplot(data=df_data[:len(train_data)],x="Pclass",y="Fare",hue="Survived",
-                 flierprops={'marker':'o','markerfacecolor':'red','color':'black'})
+                  flierprops={'marker':'o','markerfacecolor':'red','color':'black'})
 p10.set_xticklabels(["1(Upper)","2(Middle)","3(Lower)"])
-plt.show()
 
+fig = plt.figure()
 p11 = sns.countplot(data=df_data[:len(train_data)], x="Deck", hue="Pclass")
 p11.set_xticklabels(['A', 'B', 'C', 'D', 'E', 'F', 'T',"G","Unknow"])
 p11.legend(loc="upper left",title="Pclass")
-plt.show()
 
+fig = plt.figure()
 p12 = sns.countplot(data=df_data[:len(train_data)], x="family_1", hue="Survived")
 p12.set_xticklabels(["1","2","3"])
-plt.show()
 
 fig, axes = plt.subplots(1,2)
 p13 = sns.countplot(ax=axes[0],data=df_data[:len(train_data)], x="Embarked", hue="Survived")
@@ -101,16 +100,16 @@ plt.show()
 
 print("*"*50)
 from sklearn.model_selection import train_test_split
-x_train, x_test, y_train, y_test = train_test_split(df_data[:len(train_data)][["Pclass","Sex","age_1","family_1","fare_bin6","Embarked"]], df_data[:len(train_data)]["Survived"], test_size=0.2, random_state=0)
+x_train, x_test, y_train, y_test = train_test_split(df_data[:len(train_data)][["Pclass","Sex","age_1","family_1","fare_bin6","Embarked",'Deck']], df_data[:len(train_data)]["Survived"], test_size=0.2, random_state=0)
 
 
 from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import cross_val_score
 from sklearn.metrics import r2_score
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier
 
 
-randomForestModel = RandomForestClassifier(n_estimators=250,random_state=0,oob_score=True)
+randomForestModel = RandomForestClassifier(n_estimators=250,random_state=1,oob_score=True)
 cv_rf = cross_val_score(estimator = randomForestModel, X = x_train, y = y_train, cv = 10)
 randomForestModel.fit(x_train,y_train)
 randomForestModel.predict(x_train)
@@ -120,13 +119,15 @@ df = pd.DataFrame({"method":["cv","train","test","oob"],
 print(df)
 
 
-pred = randomForestModel.predict(df_data[len(train_data):][["Pclass","Sex","age_1","family_1","fare_bin6","Embarked"]])
+pred = randomForestModel.predict(df_data[len(train_data):][["Pclass","Sex","age_1","family_1","fare_bin6","Embarked",'Deck']])
 
 
-# with open("survived_predict.csv","w") as f:
-#     f.write("PassengerId,Survived\n")
-#     for i in range(len(pred)):
-#         f.write(str(i+892)+","+str(int(pred[i]))+"\n")
+with open("survived_predict.csv","w") as f:
+    f.write("PassengerId,Survived\n")
+    for i in range(len(pred)):
+        f.write(str(i+892)+","+str(int(pred[i]))+"\n")
+
+
 
 
 
