@@ -23,4 +23,4 @@ We also include gender_submission.csv, a set of predictions that assume all and 
 
 ## Data Dictionary
 
-![Uploading 截圖 2022-05-18 14.38.06.png…]()
+![截圖 2022-05-18 14 38 06](https://user-images.githubusercontent.com/97944035/168973785-214ec2d3-188e-4cbb-9f01-f52300c86c7a.png)
