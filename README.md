@@ -11,6 +11,7 @@ While there was some element of luck involved in surviving, it seems some groups
 In this challenge, we ask you to build a predictive model that answers the question: “what sorts of people were more likely to survive?” using passenger data (ie name, age, gender, socio-economic class, etc).
 
 ## Dataset
+訓練集資料(891筆)、測試集資料(892筆)
 The data has been split into two groups:
 
 training set (train.csv)
@@ -22,5 +23,5 @@ The test set should be used to see how well your model performs on unseen data. 
 We also include gender_submission.csv, a set of predictions that assume all and only female passengers survive, as an example of what a submission file should look like.
 
 ## Data Dictionary
-
+表格為資料的各個特徵
 ![截圖 2022-05-18 14 38 06](https://user-images.githubusercontent.com/97944035/168973785-214ec2d3-188e-4cbb-9f01-f52300c86c7a.png)
