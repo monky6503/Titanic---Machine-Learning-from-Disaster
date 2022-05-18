@@ -12,6 +12,7 @@ In this challenge, we ask you to build a predictive model that answers the quest
 
 ## Dataset
 訓練集資料(891筆)、測試集資料(892筆)
+
 The data has been split into two groups:
 
 training set (train.csv)
